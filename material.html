@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materials — 3dify.printz</title>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:wght@700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root { 
+    --bg: #F7F5F0; 
+    --surface: #FFFFFF; 
+    --line: #E1DDD5; 
+    --text: #121212; 
+    --muted: #4a4845; 
+    --accent: #E0533C; 
+    --radius-pill: 100px;
+    --display: 'Italiana', serif; 
+    --body: 'Plus Jakarta Sans', sans-serif; 
+    --mono: 'Space Mono', monospace; 
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body); font-weight: 700; line-height: 1.6; }
+  a { color:inherit; text-decoration:none; }
+  .wrap { max-width:1240px; margin:0 auto; padding:0 36px; }
+  
+  header { position: sticky; top: 0; z-index: 50; background: rgba(247, 245, 240, 0.90); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 36px; max-width: 1240px; margin: 0 auto; gap: 16px; }
+  .logo { font-family: var(--display); font-weight: 700; font-size: 1.5rem; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 32px; font-size: 0.88rem; text-transform: uppercase; color: var(--muted); }
+  .nav-links a.active { color: var(--text); border-bottom: 2px solid var(--text); }
+  
+  .btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--body); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 12px 24px; border-radius: var(--radius-pill); border: 2px solid var(--text); cursor: pointer; transition: all .25s ease; white-space: nowrap; }
+  .btn-primary { background: var(--text); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-2px); }
+
+  .page-head { padding: 72px 0 48px; border-bottom: 1px solid var(--line); }
+  .page-head h1 { font-family: var(--display); font-size: clamp(2.5rem, 5vw, 4rem); text-transform: uppercase; }
+  
+  section.pad { padding: 72px 0 112px; }
+  .mat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
+  .mat-card { background: var(--surface); border: 1px solid var(--line); padding: 36px 28px; display: flex; flex-direction: column; justify-content: space-between; }
+  .mat-card .mat-name { font-family: var(--display); font-size: 1.6rem; margin-bottom: 12px; text-transform: uppercase; }
+  .mat-card .mat-desc { font-size: 0.92rem; margin-bottom: 32px; }
+  .mat-specs { display: flex; flex-direction: column; gap: 8px; font-family: var(--mono); font-size: 0.72rem; border-top: 1px solid var(--line); padding-top: 18px; text-transform: uppercase; margin-bottom: 24px; }
+  .mat-specs span { color: var(--muted); }
+
+  .cta-banner { margin-top: 72px; padding: 48px; background: var(--surface); border: 1px solid var(--line); text-align: center; }
+  .cta-banner h2 { font-family: var(--display); font-size: 2rem; text-transform: uppercase; margin-bottom: 12px; }
+  .cta-banner p { color: var(--muted); margin-bottom: 24px; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="index.html" class="logo">3dify.printz</a>
+    <div class="nav-links">
+      <a href="portfolio.html">Portfolio</a>
+      <a href="materials.html" class="active">Materials</a>
+      <a href="process.html">Process</a>
+      <a href="reviews.html">Reviews</a>
+    </div>
+    <a class="btn btn-primary wa-btn" href="#" target="_blank">Get Quote</a>
+  </nav>
+</header>
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <h1>Technical Materials</h1>
+      <p>Select the ideal polymer for your functional requirements or aesthetic specs.</p>
+    </div>
+  </div>
+  <section class="pad">
+    <div class="wrap">
+      <div class="mat-grid">
+        <div class="mat-card">
+          <div><div class="mat-name">PLA / PLA+</div><div class="mat-desc">Ideal for aesthetic display models and low-stress prototypes with ultra-sharp dimensional accuracy.</div></div>
+          <div>
+            <div class="mat-specs"><span>Layer Height</span>0.12–0.28mm<span>Tensile Strength</span>Medium<span>Application</span>Visual Models</div>
+            <a class="btn btn-primary wa-btn" href="#" target="_blank" style="width:100%; justify-content:center;">Quote PLA</a>
+          </div>
+        </div>
+        <div class="mat-card">
+          <div><div class="mat-name">PETG</div><div class="mat-desc">Engineered for functional everyday hardware—brackets, housings, and weather-resistant fixtures.</div></div>
+          <div>
+            <div class="mat-specs"><span>Layer Height</span>0.16–0.24mm<span>Tensile Strength</span>High<span>Application</span>Functional Parts</div>
+            <a class="btn btn-primary wa-btn" href="#" target="_blank" style="width:100%; justify-content:center;">Quote PETG</a>
+          </div>
+        </div>
+        <div class="mat-card">
+          <div><div class="mat-name">ABS</div><div class="mat-desc">High thermal stability and machinability, crafted for automotive and demanding outdoor uses.</div></div>
+          <div>
+            <div class="mat-specs"><span>Layer Height</span>0.16–0.24mm<span>Tensile Strength</span>High<span>Application</span>Heat Resistance</div>
+            <a class="btn btn-primary wa-btn" href="#" target="_blank" style="width:100%; justify-content:center;">Quote ABS</a>
+          </div>
+        </div>
+        <div class="mat-card">
+          <div><div class="mat-name">Resin (SLA)</div><div class="mat-desc">Microscopic precision designed for miniatures, master jewelry molds, and intricate detailing.</div></div>
+          <div>
+            <div class="mat-specs"><span>Layer Height</span>0.025–0.05mm<span>Detail Grade</span>Ultra-Fine<span>Application</span>Intricate Masterwork</div>
+            <a class="btn btn-primary wa-btn" href="#" target="_blank" style="width:100%; justify-content:center;">Quote Resin</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-banner">
+        <h2>Unsure which material fits your specs?</h2>
+        <p>Send us your requirements or CAD file and we'll recommend the best polymer.</p>
+        <a class="btn btn-primary wa-btn" href="#" target="_blank">Ask For Material Advice</a>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  const WA_NUMBER = "94764892775"; 
+  const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hello! I need help picking a material / requesting a quote for a 3D print.")}`;
+  document.querySelectorAll('.wa-btn').forEach(el => el.href = waLink);
+</script>
+</body>
+</html>
