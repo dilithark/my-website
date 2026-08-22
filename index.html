@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3dify.printz — Custom 3D Printing & Fabrication</title>
+<meta name="description" content="3dify.printz — bespoke 3D printing, prototyping and functional parts based in Colombo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:ital,wght@0,600;0,700;0,800;1,700&family=Space+Mono:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --bg-raised: #EFECE6;
+    --surface: #FFFFFF;
+    --line: #E1DDD5;
+    --line-dark: #121212;
+    --text: #121212;
+    --muted: #4a4845;
+    --accent: #E0533C;
+    --radius-pill: 100px;
+    --display: 'Italiana', serif;
+    --body: 'Plus Jakarta Sans', sans-serif;
+    --mono: 'Space Mono', monospace;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body); font-weight: 700; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color:inherit; text-decoration:none; }
+  .wrap { max-width:1240px; margin:0 auto; padding:0 36px; }
+
+  header { position: sticky; top: 0; z-index: 50; background: rgba(247, 245, 240, 0.90); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 36px; max-width: 1240px; margin: 0 auto; gap: 16px; }
+  .logo { font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .logo .dot { color: var(--accent); }
+  .logo-tag { font-family: var(--mono); font-weight: 700; font-size: 0.65rem; color: var(--text); border: 1.5px solid var(--line-dark); padding: 2px 8px; border-radius: var(--radius-pill); text-transform: uppercase; }
+  
+  .nav-links { display: none; align-items: center; gap: 32px; font-size: 0.88rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .nav-links a { transition: color .2s ease; }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  @media(min-width: 860px){ .nav-links{ display: flex; } }
+
+  .btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--body); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 14px 28px; border-radius: var(--radius-pill); border: 2px solid var(--text); cursor: pointer; transition: all .25s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap; }
+  .btn-primary { background: var(--text); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-2px); }
+  .btn-ghost { border-color: var(--line-dark); color: var(--text); background: transparent; }
+  .btn-ghost:hover { border-color: var(--text); background: var(--surface); }
+
+  .hero { padding: 100px 0 96px; position: relative; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+  .eyebrow::before { content:''; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
+  
+  .hero h1.hero-title { font-family: var(--display); font-weight: 700; font-size: clamp(3rem, 7vw, 5.5rem); line-height: 0.98; max-width: 960px; text-transform: uppercase; margin-bottom: 20px; }
+  .hero h2.sub-heading { font-family: var(--display); font-weight: 700; font-size: clamp(1.8rem, 3.5vw, 2.8rem); line-height: 1.1; max-width: 920px; text-transform: uppercase; }
+  .hero h2.sub-heading i { font-style: italic; color: var(--accent); }
+  .hero p.sub { margin-top: 28px; font-size: 1.12rem; color: var(--text); max-width: 580px; font-weight: 700; line-height: 1.7; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 44px; }
+
+  .stat-strip { margin-top: 96px; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 2px solid var(--line-dark); }
+  .stat { padding: 32px 24px 0 0; }
+  .stat .n { font-family: var(--display); font-size: 3rem; font-weight: 700; line-height: 1; }
+  .stat .l { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 10px; }
+
+  footer { padding: 64px 36px 48px; background: var(--bg); }
+  .foot-wrap { max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; align-items: center; }
+  footer .fmeta { font-size: 0.78rem; font-family: var(--mono); font-weight: 700; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="index.html" class="logo">3dify<span class="dot">.</span>printz <span class="logo-tag">Studio</span></a>
+    <div class="nav-links">
+      <a href="portfolio.html">Portfolio</a>
+      <a href="materials.html">Materials</a>
+      <a href="process.html">Process</a>
+      <a href="reviews.html">Reviews</a>
+    </div>
+    <a class="btn btn-primary wa-btn" href="#" target="_blank">Get Quote</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">FDM &amp; Resin Fabrication · Colombo, LK</div>
+      <h1 class="hero-title">3DIFY.PRINTZ</h1>
+      <h2 class="sub-heading">Precision <i>Engineering</i> &amp; Tactile Design</h2>
+      <p class="sub">3dify.printz transforms digital concepts into physical perfection. From technical CAD files to hand-sketched prototypes, we deliver industrial-grade custom prints direct to your hands.</p>
+      
+      <div class="hero-actions">
+        <a class="btn btn-primary wa-btn" href="#" target="_blank">Get Instant Quote</a>
+        <a class="btn btn-ghost" href="portfolio.html">Explore Archive →</a>
+      </div>
+
+      <div class="stat-strip">
+        <div class="stat"><div class="n">430+</div><div class="l">Custom Parts Shipped</div></div>
+        <div class="stat"><div class="n">4.9 / 5</div><div class="l">Client Satisfaction</div></div>
+        <div class="stat"><div class="n">24–48h</div><div class="l">Turnaround Time</div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-wrap">
+    <div class="logo">3dify<span class="dot">.</span>printz</div>
+    <div class="fmeta">+94 76 489 2775 · Colombo, Sri Lanka</div>
+    <div class="fmeta">© 2026 3DIFY.PRINTZ · ALL RIGHTS RESERVED</div>
+  </div>
+</footer>
+
+<script>
+  const WA_NUMBER = "94764892775"; 
+  const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hello 3dify.printz studio! I would like to request a quote for a 3D printing project.")}`;
+  document.querySelectorAll('.wa-btn').forEach(el => el.href = waLink);
+</script>
+</body>
+</html>
