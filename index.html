@@ -3,67 +3,213 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3dify.printz — Custom 3D Printing & Fabrication</title>
-<meta name="description" content="3dify.printz — bespoke 3D printing, prototyping and functional parts based in Colombo.">
+<title>3dify.printz — Instant Print Quote & Fabrication</title>
+<meta name="description" content="3dify.printz — bespoke 3D printing, prototyping and functional parts based in Colombo. Get an instant quote.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:ital,wght@0,600;0,700;0,800;1,700&family=Space+Mono:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:ital,wght@0,600;0,700;0,800;1,700&family=Space+Mono:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+<!-- Three.js and STLLoader for 3D Visual Mesh Rendering -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
 <style>
   :root {
-    --bg: #F7F5F0;
-    --bg-raised: #EFECE6;
-    --surface: #FFFFFF;
-    --line: #E1DDD5;
-    --line-dark: #121212;
+    --bg: #F5F2EC;
+    --bg-raised: #EBE6DC;
+    --surface: #FAF8F5;
+    --surface-card: #FAF7F2;
+    --line: #DFD9CE;
+    --line-dark: #1C1B18;
     --text: #121212;
-    --muted: #4a4845;
-    --accent: #E0533C;
+    --muted: #4A4845;
+    
+    /* Rich Color Fills */
+    --accent: #E0533C;            /* Terracotta Red */
+    --accent-hover: #C8422C;
+    --accent-soft: #F9EBE8;       /* Warm Tint Fill */
+    --accent-border: #E8A89C;
+    
+    --gold: #D9A036;
+    --gold-soft: #FAF3E5;
+    
+    --tag-bg: #EAE5DB;
     --radius-pill: 100px;
     --display: 'Italiana', serif;
     --body: 'Plus Jakarta Sans', sans-serif;
     --mono: 'Space Mono', monospace;
   }
+
   * { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior:smooth; }
   body { background: var(--bg); color: var(--text); font-family: var(--body); font-weight: 700; line-height: 1.6; -webkit-font-smoothing: antialiased; }
   a { color:inherit; text-decoration:none; }
   .wrap { max-width:1240px; margin:0 auto; padding:0 36px; }
 
-  header { position: sticky; top: 0; z-index: 50; background: rgba(247, 245, 240, 0.90); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
-  nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 36px; max-width: 1240px; margin: 0 auto; gap: 16px; }
-  .logo { font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  /* Header / Nav */
+  header { position: sticky; top: 0; z-index: 50; background: rgba(245, 242, 236, 0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 36px; max-width: 1240px; margin: 0 auto; gap: 16px; }
+  .logo { font-family: var(--display); font-weight: 700; font-size: 1.55rem; letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
   .logo .dot { color: var(--accent); }
-  .logo-tag { font-family: var(--mono); font-weight: 700; font-size: 0.65rem; color: var(--text); border: 1.5px solid var(--line-dark); padding: 2px 8px; border-radius: var(--radius-pill); text-transform: uppercase; }
+  .logo-tag { font-family: var(--mono); font-weight: 700; font-size: 0.65rem; color: #FFF; background: var(--line-dark); padding: 3px 10px; border-radius: var(--radius-pill); text-transform: uppercase; letter-spacing: 0.05em; }
   
   .nav-links { display: none; align-items: center; gap: 32px; font-size: 0.88rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
   .nav-links a { transition: color .2s ease; }
-  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
   @media(min-width: 860px){ .nav-links{ display: flex; } }
 
-  .btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--body); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 14px 28px; border-radius: var(--radius-pill); border: 2px solid var(--text); cursor: pointer; transition: all .25s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap; }
-  .btn-primary { background: var(--text); color: var(--bg); }
-  .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-2px); }
-  .btn-ghost { border-color: var(--line-dark); color: var(--text); background: transparent; }
-  .btn-ghost:hover { border-color: var(--text); background: var(--surface); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--body); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 14px 28px; border-radius: var(--radius-pill); border: 2px solid var(--line-dark); cursor: pointer; transition: all .25s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap; }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #FFF; }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(224, 83, 60, 0.25); }
+  .btn-ghost { border-color: var(--line-dark); color: var(--text); background: var(--surface); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 
-  .hero { padding: 100px 0 96px; position: relative; border-bottom: 1px solid var(--line); }
-  .eyebrow { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
-  .eyebrow::before { content:''; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
+  /* Hero Section */
+  .hero { padding: 70px 0 50px; position: relative; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; background: var(--accent-soft); border: 1px solid var(--accent-border); padding: 4px 12px; border-radius: var(--radius-pill); }
+  .eyebrow::before { content:''; width: 7px; height: 7px; background: var(--accent); border-radius: 50%; }
   
-  .hero h1.hero-title { font-family: var(--display); font-weight: 700; font-size: clamp(3rem, 7vw, 5.5rem); line-height: 0.98; max-width: 960px; text-transform: uppercase; margin-bottom: 20px; }
-  .hero h2.sub-heading { font-family: var(--display); font-weight: 700; font-size: clamp(1.8rem, 3.5vw, 2.8rem); line-height: 1.1; max-width: 920px; text-transform: uppercase; }
-  .hero h2.sub-heading i { font-style: italic; color: var(--accent); }
-  .hero p.sub { margin-top: 28px; font-size: 1.12rem; color: var(--text); max-width: 580px; font-weight: 700; line-height: 1.7; }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 44px; }
+  .hero h1.hero-title { font-family: var(--display); font-weight: 700; font-size: clamp(2.5rem, 5vw, 4.2rem); line-height: 0.98; max-width: 960px; text-transform: uppercase; margin-bottom: 16px; }
+  .hero h1.hero-title i { font-style: italic; color: var(--accent); }
+  .hero p.sub { font-size: 1.05rem; color: var(--muted); max-width: 620px; font-weight: 700; line-height: 1.6; }
 
-  .stat-strip { margin-top: 96px; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 2px solid var(--line-dark); }
-  .stat { padding: 32px 24px 0 0; }
-  .stat .n { font-family: var(--display); font-size: 3rem; font-weight: 700; line-height: 1; }
-  .stat .l { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 10px; }
+  /* Calculator Layout */
+  .calc-section { padding: 50px 0 90px; }
+  .calc-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 40px; align-items: start; }
+  @media (max-width: 900px){ .calc-grid { grid-template-columns: 1fr; } }
 
-  footer { padding: 64px 36px 48px; background: var(--bg); }
+  section.panel { margin-bottom: 40px; }
+  .step-label { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+  .step-num { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); font-weight: 700; background: var(--accent-soft); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--accent-border); }
+  .step-title { font-family: var(--display); font-weight: 700; font-size: 1.5rem; text-transform: uppercase; }
+  .step-hint { font-size: 0.82rem; color: var(--muted); font-family: var(--mono); text-transform: uppercase; margin-bottom: 14px; }
+
+  /* Dropzone & File Upload */
+  .dropzone { border: 2px dashed var(--accent); border-radius: 12px; padding: 44px 24px; text-align: center; cursor: pointer; transition: all .2s ease; background: var(--accent-soft); }
+  .dropzone:hover, .dropzone.drag { background: #F5E0DC; border-color: var(--accent-hover); }
+  .dz-icon { font-family: var(--display); font-size: 2.2rem; color: var(--accent); margin-bottom: 8px; }
+  .dz-main { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: var(--text); }
+  .dz-sub { font-size: 0.8rem; color: var(--muted); margin-top: 4px; font-weight: 700; }
+  input[type=file] { display: none; }
+
+  .add-more-row { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+  .add-more-btn { font-family: var(--mono); font-size: 0.75rem; letter-spacing: .06em; text-transform: uppercase; background: var(--surface); border: 1.5px solid var(--line-dark); padding: 8px 16px; cursor: pointer; color: var(--text); border-radius: var(--radius-pill); font-weight: 700; transition: all 0.2s; }
+  .add-more-btn:hover { background: var(--line-dark); color: #FFF; }
+  .item-count { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); font-weight: 700; }
+
+  /* Item Cards & 3D Preview */
+  #itemsList { margin-top: 18px; display: flex; flex-direction: column; gap: 16px; }
+  .item-card { border: 1.5px solid var(--line-dark); background: var(--surface-card); padding: 22px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); }
+  .item-preview-layout { display: grid; grid-template-columns: 140px 1fr; gap: 20px; }
+  @media(max-width: 550px) { .item-preview-layout { grid-template-columns: 1fr; } }
+  
+  .canvas-container { width: 100%; height: 140px; background: var(--bg-raised); border-radius: 8px; border: 1px solid var(--line); overflow: hidden; position: relative; }
+  .canvas-container canvas { width: 100% !important; height: 100% !important; display: block; }
+  
+  .item-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .item-head-left { min-width: 0; }
+  .item-tag { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
+  .item-filename { font-family: var(--mono); font-size: 0.88rem; font-weight: 700; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); }
+  .item-dims { font-size: 0.75rem; color: var(--muted); margin-top: 2px; font-family: var(--mono); }
+  .item-remove { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; color: var(--accent); background: none; border: none; cursor: pointer; font-weight: 700; text-decoration: underline; flex-shrink: 0; }
+  
+  .warn-banner { margin-top: 10px; margin-bottom: 8px; padding: 10px 14px; background: #FFF6E5; border-left: 3px solid var(--gold); font-size: 0.78rem; color: #694A08; font-family: var(--mono); }
+
+  .mini-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .mini-label { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); width: 70px; flex-shrink: 0; }
+
+  .pill { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; padding: 6px 14px; border: 1.5px solid var(--line-dark); background: var(--bg); cursor: pointer; color: var(--text); border-radius: var(--radius-pill); transition: all 0.15s ease; }
+  .pill.active { border-color: var(--accent); background: var(--accent); color: #FFF; }
+
+  .color-select { font-family: var(--mono); font-size: 0.78rem; font-weight: 700; padding: 6px 14px; border: 1.5px solid var(--line-dark); background: var(--bg); color: var(--text); border-radius: var(--radius-pill); cursor: pointer; outline: none; }
+  .color-select:focus { border-color: var(--accent); }
+
+  .item-infill { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 160px; }
+  .item-infill input[type=range] { flex: 1; }
+  .infill-readout { font-family: var(--mono); font-size: 0.8rem; color: var(--accent); width: 38px; font-weight: 700; }
+
+  .item-qty { display: flex; align-items: center; border: 1.5px solid var(--line-dark); border-radius: var(--radius-pill); overflow: hidden; background: var(--bg); }
+  .item-qty button { width: 28px; height: 28px; border: none; background: transparent; cursor: pointer; font-family: var(--mono); font-size: 0.9rem; font-weight: 700; }
+  .item-qty button:hover { background: var(--accent-soft); color: var(--accent); }
+  .item-qty input { width: 36px; text-align: center; border: none; border-left: 1.5px solid var(--line-dark); border-right: 1.5px solid var(--line-dark); height: 28px; font-family: var(--mono); font-size: 0.8rem; background: var(--surface); font-weight: 700; }
+
+  .item-line-cost { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); font-family: var(--mono); }
+  .item-line-cost .val { font-family: var(--mono); color: var(--accent); font-weight: 700; }
+
+  input[type=range] { -webkit-appearance: none; height: 4px; background: var(--line-dark); outline: none; border-radius: 2px; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; margin-top: -5px; }
+  input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: none; cursor: pointer; }
+
+  .empty-items { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 40px 10px; font-family: var(--mono); border: 1.5px dashed var(--line); border-radius: 8px; margin-top: 14px; background: var(--surface-card); }
+
+  /* Order Controls */
+  .toggle-row { display: flex; align-items: center; gap: 14px; margin-top: 12px; cursor: pointer; width: fit-content; background: var(--surface-card); padding: 12px 18px; border: 1.5px solid var(--line-dark); border-radius: 10px; }
+  .toggle { width: 42px; height: 24px; border-radius: 20px; background: var(--bg-raised); position: relative; transition: background .15s; border: 1.5px solid var(--line-dark); }
+  .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--text); transition: left .15s; }
+  .toggle.on { background: var(--accent); }
+  .toggle.on::after { left: 20px; background: #FFF; }
+  .toggle-text { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; }
+  .toggle-text small { display: block; color: var(--muted); font-size: 0.75rem; font-family: var(--mono); text-transform: none; font-weight: 700; }
+
+  /* COLORED ENHANCED PRINT TICKET WIDGET */
+  .ticket-wrap { position: sticky; top: 100px; }
+  .ticket { background: var(--surface); border: 2.5px solid var(--line-dark); border-radius: 12px; overflow: hidden; box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08); }
+  
+  /* Ticket Dark Header with Color Accent */
+  .ticket-brand-header { background: var(--line-dark); color: #FFF; padding: 22px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--line-dark); }
+  .ticket-brand-header .title { font-family: var(--mono); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #FFF; }
+  .ticket-status-pill { font-family: var(--mono); font-size: 0.65rem; padding: 4px 10px; border-radius: var(--radius-pill); background: var(--accent); color: #FFF; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; }
+  
+  .ticket-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px 24px; background: var(--accent-soft); border-bottom: 1.5px solid var(--accent-border); font-family: var(--mono); font-size: 0.72rem; }
+  .ticket-meta-item .m-label { color: var(--muted); text-transform: uppercase; font-size: 0.62rem; display: block; margin-bottom: 2px; font-weight: 700; }
+  .ticket-meta-item .m-val { font-weight: 700; color: var(--accent); }
+
+  .ticket-inner { padding: 22px 24px 24px; }
+  
+  .ticket-section-title { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; font-weight: 700; }
+
+  .ticket-items { max-height: 320px; overflow-y: auto; padding-right: 4px; }
+  .t-item { margin-bottom: 10px; padding: 12px; background: var(--surface-card); border-radius: 8px; border: 1px solid var(--line); }
+  
+  .t-item-header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .t-item-name { font-family: var(--mono); font-size: 0.82rem; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); }
+  .t-item-cost-val { font-family: var(--mono); font-size: 0.82rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+  
+  .t-item-specs { display: flex; flex-wrap: wrap; gap: 6px; font-family: var(--mono); font-size: 0.65rem; }
+  .t-spec-tag { background: var(--tag-bg); border: 1px solid var(--line); padding: 2px 8px; border-radius: 4px; font-weight: 700; color: var(--muted); }
+
+  .ticket-divider { border: none; border-top: 1.5px dashed var(--line-dark); margin: 18px 0; }
+
+  .cost-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.8rem; margin-bottom: 18px; }
+  .cost-table td { padding: 6px 0; color: var(--muted); font-weight: 700; }
+  .cost-table td.val { text-align: right; color: var(--text); font-weight: 700; }
+  .cost-table tr.accent-row td { color: var(--accent); }
+
+  /* Filled High-Contrast Total Box */
+  .total-box { padding: 18px 20px; background: var(--accent); color: #FFF; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 14px rgba(224, 83, 60, 0.25); }
+  .total-box .label { font-family: var(--mono); font-size: 0.75rem; letter-spacing: .12em; text-transform: uppercase; color: #FFF; opacity: 0.9; }
+  .total-box .amount { font-family: var(--display); font-weight: 700; font-size: 1.9rem; color: #FFF; }
+
+  .cta-btn-stack { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  
+  .ticket-actions-row { display: flex; gap: 8px; margin-top: 10px; }
+  .btn-sm-action { flex: 1; padding: 9px; font-family: var(--mono); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: var(--bg); border: 1px solid var(--line-dark); border-radius: var(--radius-pill); cursor: pointer; text-align: center; color: var(--text); transition: all 0.2s; }
+  .btn-sm-action:hover { background: var(--line-dark); color: #FFF; }
+
+  .ticket-footnote { font-size: 0.68rem; color: var(--muted); margin-top: 14px; line-height: 1.4; text-align: center; font-family: var(--mono); }
+  .ticket-empty { color: var(--muted); font-size: 0.85rem; text-align: center; padding: 40px 10px; font-family: var(--mono); line-height: 1.6; background: var(--surface-card); border-radius: 8px; border: 1px dashed var(--line); }
+
+  /* Footer */
+  footer { padding: 60px 36px 40px; background: var(--line-dark); color: #FFF; margin-top: 40px; }
   .foot-wrap { max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; align-items: center; }
-  footer .fmeta { font-size: 0.78rem; font-family: var(--mono); font-weight: 700; text-transform: uppercase; }
+  footer .logo .dot { color: var(--accent); }
+  footer .fmeta { font-size: 0.78rem; font-family: var(--mono); font-weight: 700; text-transform: uppercase; opacity: 0.8; }
+
+  /* Print Stylesheet */
+  @media print {
+    body * { visibility: hidden; }
+    .ticket-wrap, .ticket-wrap * { visibility: visible; }
+    .ticket-wrap { position: absolute; left: 0; top: 0; width: 100%; }
+    .cta-btn-stack, .ticket-actions-row { display: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -85,19 +231,116 @@
   <section class="hero">
     <div class="wrap">
       <div class="eyebrow">FDM &amp; Resin Fabrication · Colombo, LK</div>
-      <h1 class="hero-title">3DIFY.PRINTZ</h1>
-      <h2 class="sub-heading">Precision <i>Engineering</i> &amp; Tactile Design</h2>
-      <p class="sub">3dify.printz transforms digital concepts into physical perfection. From technical CAD files to hand-sketched prototypes, we deliver industrial-grade custom prints direct to your hands.</p>
-      
-      <div class="hero-actions">
-        <a class="btn btn-primary wa-btn" href="#" target="_blank">Get Instant Quote</a>
-        <a class="btn btn-ghost" href="portfolio.html">Explore Archive →</a>
-      </div>
+      <h1 class="hero-title">Instant <i>Print</i> Quote</h1>
+      <p class="sub">Upload your 3D models to calculate real-time pricing straight from geometry. Mix materials, colors, and quantities dynamically.</p>
+    </div>
+  </section>
 
-      <div class="stat-strip">
-        <div class="stat"><div class="n">430+</div><div class="l">Custom Parts Shipped</div></div>
-        <div class="stat"><div class="n">4.9 / 5</div><div class="l">Client Satisfaction</div></div>
-        <div class="stat"><div class="n">24–48h</div><div class="l">Turnaround Time</div></div>
+  <section class="calc-section">
+    <div class="wrap">
+      <div class="calc-grid">
+        
+        <!-- LEFT: UPLOAD & CONFIGURATION -->
+        <div>
+          <!-- STEP 1: UPLOAD -->
+          <section class="panel">
+            <div class="step-label"><span class="step-num">01</span><span class="step-title">Upload STL Files</span></div>
+            <div class="step-hint">.STL format · Binary or ASCII · Multiple files supported</div>
+
+            <div id="dropzone" class="dropzone">
+              <div class="dz-icon">△</div>
+              <div class="dz-main">Drop .STL files here, or click to browse</div>
+              <div class="dz-sub">Configure each uploaded model independently</div>
+            </div>
+            <input type="file" id="fileInput" accept=".stl" multiple />
+
+            <div class="add-more-row">
+              <span class="item-count" id="itemCount">0 items added</span>
+              <button class="add-more-btn" id="addMoreBtn">+ Add more files</button>
+            </div>
+
+            <div id="itemsList"></div>
+            <div class="empty-items" id="emptyItems">No files added yet. Drop your STL files above to build your quote.</div>
+          </section>
+
+          <!-- STEP 2: OPTIONS -->
+          <section class="panel">
+            <div class="step-label"><span class="step-num">02</span><span class="step-title">Production Speed</span></div>
+            <div class="toggle-row" id="rushToggle">
+              <div class="toggle" id="rushSwitch"></div>
+              <div class="toggle-text">Rush order (24–48h)<small>Adds 25% surcharge to total order</small></div>
+            </div>
+          </section>
+        </div>
+
+        <!-- RIGHT: PROFESSIONAL COLOR-FILLED TICKET WIDGET -->
+        <div class="ticket-wrap">
+          <div class="ticket">
+            
+            <div class="ticket-brand-header">
+              <span class="title">3DIFY // SPECIFICATION TICKET</span>
+              <span class="ticket-status-pill">ESTIMATE</span>
+            </div>
+
+            <div class="ticket-meta-grid">
+              <div class="ticket-meta-item">
+                <span class="m-label">Reference ID</span>
+                <span class="m-val" id="ticketId">#---</span>
+              </div>
+              <div class="ticket-meta-item">
+                <span class="m-label">Issued Date</span>
+                <span class="m-val" id="ticketDate">--</span>
+              </div>
+            </div>
+
+            <div class="ticket-inner">
+              <div id="ticketEmpty" class="ticket-empty">Upload 3D CAD files on the left to generate your technical quote breakdown.</div>
+
+              <div id="ticketBody" style="display:none;">
+                <div class="ticket-section-title">Itemized Line Breakdown</div>
+                <div class="ticket-items" id="ticketItems"></div>
+
+                <hr class="ticket-divider" />
+
+                <table class="cost-table">
+                  <tr>
+                    <td>Fabrication Subtotal</td>
+                    <td class="val" id="cSubtotal">Rs. 0</td>
+                  </tr>
+                  <tr>
+                    <td>Setup & Machine Prep</td>
+                    <td class="val" id="cSetup">Rs. 0</td>
+                  </tr>
+                  <tr id="cRushRow" class="accent-row" style="display:none;">
+                    <td>Priority Rush Surcharge (+25%)</td>
+                    <td class="val" id="cRush">Rs. 0</td>
+                  </tr>
+                </table>
+
+                <div class="total-box">
+                  <span class="label">Total (LKR)</span>
+                  <span class="amount"><span id="cTotal">Rs. 0</span></span>
+                </div>
+
+                <div class="cta-btn-stack">
+                  <a class="btn btn-primary" id="ctaEmail" href="#" target="_blank" style="width:100%;">Email Quote Request</a>
+                  <a class="btn btn-ghost" id="ctaWhatsapp" href="#" target="_blank" style="width:100%;">Send via WhatsApp</a>
+                </div>
+
+                <div class="ticket-actions-row">
+                  <button class="btn-sm-action" onclick="window.print()">Print Ticket</button>
+                  <button class="btn-sm-action" onclick="copyQuoteSummary()">Copy Summary</button>
+                </div>
+
+                <div class="ticket-footnote">
+                  Derived from mesh shell &amp; volume. Final confirmation subject to geometry review prior to fabrication.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -112,9 +355,444 @@
 </footer>
 
 <script>
-  const WA_NUMBER = "94764892775"; 
-  const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hello 3dify.printz studio! I would like to request a quote for a 3D printing project.")}`;
+/* CONFIGURATION */
+const MATERIALS = {
+  pla:  { label:'PLA',  density:1.24, pricePerGram:45 },
+  petg: { label:'PETG', density:1.27, pricePerGram:55 },
+  abs:  { label:'ABS',  density:1.04, pricePerGram:50 },
+};
+
+const COLORS = [
+  { id:'white',  label:'White',        hex:'#F2F1ED' },
+  { id:'black',  label:'Black',        hex:'#1B1B1B' },
+  { id:'red',    label:'Signal Red',   hex:'#C6432A' },
+  { id:'navy',   label:'Navy',         hex:'#243A56' },
+  { id:'forest', label:'Forest Green', hex:'#2F5D46' },
+  { id:'sand',   label:'Sand',         hex:'#D8C39A' },
+  { id:'sky',    label:'Sky Blue',     hex:'#7FA8C9' },
+  { id:'grey',   label:'Concrete Grey',hex:'#8B8B85' },
+  { id:'silver', label:'Silver Silk',  hex:'#C9CBCE', premium:true },
+  { id:'gold',   label:'Gold Silk',    hex:'#C9A227', premium:true },
+];
+
+const SETUP_FEE = 200;
+const PREMIUM_MULTIPLIER = 1.15;
+const RUSH_MULTIPLIER = 1.25;
+const SHELL_FRACTION = 0.15;
+const BED = { x:220, y:220, z:250 };
+const ORDER_EMAIL = 'dilitharajapaksha3@gmail.com';
+const WHATSAPP_NUMBER = '94764892775';
+
+/* STATE */
+let items = [];
+let itemSeq = 0;
+let rush = false;
+let currentSummaryText = "";
+const renderers = {};
+
+/* UPLOAD HANDLERS */
+const dz = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+
+dz.addEventListener('click', () => fileInput.click());
+document.getElementById('addMoreBtn').addEventListener('click', () => fileInput.click());
+
+['dragenter','dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('drag'); }));
+['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('drag'); }));
+dz.addEventListener('drop', e => { handleFiles(e.dataTransfer.files); });
+fileInput.addEventListener('change', e => { handleFiles(e.target.files); fileInput.value=''; });
+
+function handleFiles(fileList){
+  Array.from(fileList).forEach(file => {
+    if (!file.name.toLowerCase().endsWith('.stl')) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try{
+        const buffer = ev.target.result;
+        const parsed = parseSTL(buffer);
+        items.push({
+          id: ++itemSeq,
+          file, name: file.name, buffer: buffer.slice(0),
+          volumeCm3: parsed.volumeCm3, dims: parsed.dims, triCount: parsed.triCount,
+          material: 'pla', color: 'white', infill: 20, qty: 1,
+        });
+        render();
+      } catch(err){
+        console.error(err);
+        alert(`Couldn't read "${file.name}" — try re-exporting as a standard binary STL.`);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function parseSTL(buffer){
+  const view = new DataView(buffer);
+  let isBinary = false;
+  if (buffer.byteLength > 84){
+    const triCount = view.getUint32(80, true);
+    if (84 + triCount*50 === buffer.byteLength) isBinary = true;
+  }
+  return isBinary ? parseBinary(view) : parseASCII(new TextDecoder().decode(buffer));
+}
+
+function parseBinary(view){
+  const triCount = view.getUint32(80, true);
+  let volume = 0;
+  const min = {x:Infinity,y:Infinity,z:Infinity};
+  const max = {x:-Infinity,y:-Infinity,z:-Infinity};
+  let offset = 84;
+  for (let i=0;i<triCount;i++){
+    offset += 12;
+    const v = [];
+    for (let j=0;j<3;j++){
+      const x = view.getFloat32(offset, true);
+      const y = view.getFloat32(offset+4, true);
+      const z = view.getFloat32(offset+8, true);
+      offset += 12;
+      v.push({x,y,z});
+      min.x=Math.min(min.x,x); min.y=Math.min(min.y,y); min.z=Math.min(min.z,z);
+      max.x=Math.max(max.x,x); max.y=Math.max(max.y,y); max.z=Math.max(max.z,z);
+    }
+    offset += 2;
+    volume += signedVolume(v[0], v[1], v[2]);
+  }
+  return {
+    volumeCm3: Math.abs(volume)/1000,
+    dims: { x:max.x-min.x, y:max.y-min.y, z:max.z-min.z },
+    triCount
+  };
+}
+
+function parseASCII(text){
+  const verts = [];
+  const re = /vertex\s+([-\d.eE+]+)\s+([-\d.eE+]+)\s+([-\d.eE+]+)/g;
+  let m;
+  while ((m = re.exec(text)) !== null){
+    verts.push({x:parseFloat(m[1]), y:parseFloat(m[2]), z:parseFloat(m[3])});
+  }
+  let volume = 0;
+  const min = {x:Infinity,y:Infinity,z:Infinity};
+  const max = {x:-Infinity,y:-Infinity,z:-Infinity};
+  for (let i=0;i<verts.length;i+=3){
+    const v0=verts[i], v1=verts[i+1], v2=verts[i+2];
+    if (!v0||!v1||!v2) break;
+    volume += signedVolume(v0,v1,v2);
+    [v0,v1,v2].forEach(v=>{
+      min.x=Math.min(min.x,v.x); min.y=Math.min(min.y,v.y); min.z=Math.min(min.z,v.z);
+      max.x=Math.max(max.x,v.x); max.y=Math.max(max.y,v.y); max.z=Math.max(max.z,v.z);
+    });
+  }
+  return {
+    volumeCm3: Math.abs(volume)/1000,
+    dims: { x:max.x-min.x, y:max.y-min.y, z:max.z-min.z },
+    triCount: Math.floor(verts.length/3)
+  };
+}
+
+function signedVolume(p1,p2,p3){
+  return (
+    p1.x*(p2.y*p3.z - p3.y*p2.z) +
+    p1.y*(p3.x*p2.z - p2.x*p3.z) +
+    p1.z*(p2.x*p3.y - p3.x*p2.y)
+  ) / 6.0;
+}
+
+/* CALCULATIONS */
+function itemWeight(item){
+  const mat = MATERIALS[item.material];
+  const effectiveDensityFrac = SHELL_FRACTION + (item.infill/100)*(1-SHELL_FRACTION);
+  return item.volumeCm3 * mat.density * effectiveDensityFrac;
+}
+function itemCost(item){
+  const mat = MATERIALS[item.material];
+  const colorObj = COLORS.find(c=>c.id===item.color);
+  let cost = itemWeight(item) * mat.pricePerGram * item.qty;
+  if (colorObj && colorObj.premium) cost *= PREMIUM_MULTIPLIER;
+  return cost;
+}
+
+/* RENDERING */
+const itemsList = document.getElementById('itemsList');
+const emptyItems = document.getElementById('emptyItems');
+
+function render(){
+  Object.values(renderers).forEach(r => cancelAnimationFrame(r.animId));
+  
+  document.getElementById('itemCount').textContent = items.length + (items.length===1 ? ' item added' : ' items added');
+  emptyItems.style.display = items.length ? 'none' : 'block';
+
+  itemsList.innerHTML = '';
+  items.forEach((item, idx) => {
+    itemsList.appendChild(buildItemCard(item, idx));
+  });
+
+  items.forEach(item => init3dPreview(item));
+
+  renderTicket();
+}
+
+function buildItemCard(item, idx){
+  const card = document.createElement('div');
+  card.className = 'item-card';
+  const oversize = item.dims.x > BED.x || item.dims.y > BED.y || item.dims.z > BED.z;
+
+  card.innerHTML = `
+    <div class="item-preview-layout">
+      <div class="canvas-container" id="canvas-container-${item.id}"></div>
+      <div>
+        <div class="item-head">
+          <div class="item-head-left">
+            <div class="item-tag">ITEM ${String(idx+1).padStart(2,'0')}</div>
+            <div class="item-filename">${escapeHtml(item.name)}</div>
+            <div class="item-dims">${item.dims.x.toFixed(0)}×${item.dims.y.toFixed(0)}×${item.dims.z.toFixed(0)}mm · ${item.volumeCm3.toFixed(1)}cm³</div>
+          </div>
+          <button class="item-remove" data-remove="${item.id}">Remove</button>
+        </div>
+
+        ${oversize ? `<div class="warn-banner">Exceeds standard bed limits (${BED.x}×${BED.y}×${BED.z}mm) — build splitting may be required.</div>` : ''}
+
+        <div class="mini-row">
+          <span class="mini-label">Material</span>
+          ${Object.entries(MATERIALS).map(([key,m]) => `
+            <button class="pill ${item.material===key?'active':''}" data-material="${item.id}" data-key="${key}">${m.label}</button>
+          `).join('')}
+        </div>
+
+        <div class="mini-row">
+          <span class="mini-label">Color</span>
+          <select class="color-select" data-color="${item.id}">
+            ${COLORS.map(c => `
+              <option value="${c.id}" ${item.color===c.id?'selected':''}>
+                ${c.label} ${c.premium?'(✦ Premium)':''}
+              </option>
+            `).join('')}
+          </select>
+        </div>
+
+        <div class="mini-row">
+          <span class="mini-label">Infill</span>
+          <div class="item-infill">
+            <input type="range" min="5" max="100" step="5" value="${item.infill}" data-infill="${item.id}">
+            <span class="infill-readout">${item.infill}%</span>
+          </div>
+        </div>
+
+        <div class="mini-row">
+          <span class="mini-label">Qty</span>
+          <div class="item-qty">
+            <button data-qtyminus="${item.id}">−</button>
+            <input type="text" value="${item.qty}" data-qtyinput="${item.id}">
+            <button data-qtyplus="${item.id}">+</button>
+          </div>
+        </div>
+
+        <div class="item-line-cost">
+          <span>${itemWeight(item).toFixed(1)}g each${item.qty>1?' × '+item.qty:''}</span>
+          <span class="val">${fmt(itemCost(item))}</span>
+        </div>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+/* THREE.JS VISUAL PREVIEW */
+function init3dPreview(item) {
+  const container = document.getElementById(`canvas-container-${item.id}`);
+  if (!container) return;
+
+  const width = container.clientWidth || 140;
+  const height = container.clientHeight || 140;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xEBE6DC);
+
+  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+  
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  container.appendChild(renderer.domElement);
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+  scene.add(ambientLight);
+
+  const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.85);
+  dirLight1.position.set(1, 1.2, 1).normalize();
+  scene.add(dirLight1);
+
+  const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.35);
+  dirLight2.position.set(-1, -1, -0.5).normalize();
+  scene.add(dirLight2);
+
+  const colorHex = (COLORS.find(c => c.id === item.color) || COLORS[0]).hex;
+  const material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(colorHex),
+    roughness: 0.35,
+    metalness: 0.15
+  });
+
+  const loader = new THREE.STLLoader();
+  const geometry = loader.parse(item.buffer);
+  geometry.center();
+
+  const mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
+
+  geometry.computeBoundingSphere();
+  const radius = geometry.boundingSphere.radius;
+  camera.position.set(radius * 1.8, radius * 1.5, radius * 1.8);
+  camera.lookAt(0, 0, 0);
+
+  function animate() {
+    const animId = requestAnimationFrame(animate);
+    mesh.rotation.y += 0.01;
+    renderer.render(scene, camera);
+    renderers[item.id] = { animId, material };
+  }
+  animate();
+}
+
+/* EVENT DELEGATION */
+itemsList.addEventListener('click', e => {
+  const t = e.target;
+  if (t.dataset.remove){
+    items = items.filter(i => i.id != t.dataset.remove);
+    render();
+  } else if (t.dataset.material){
+    const item = items.find(i => i.id == t.dataset.material);
+    item.material = t.dataset.key;
+    render();
+  } else if (t.dataset.qtyminus){
+    const item = items.find(i => i.id == t.dataset.qtyminus);
+    item.qty = Math.max(1, item.qty-1);
+    render();
+  } else if (t.dataset.qtyplus){
+    const item = items.find(i => i.id == t.dataset.qtyplus);
+    item.qty = Math.min(999, item.qty+1);
+    render();
+  }
+});
+
+itemsList.addEventListener('change', e => {
+  const t = e.target;
+  if (t.dataset.color){
+    const item = items.find(i => i.id == t.dataset.color);
+    item.color = t.value;
+    const colorHex = (COLORS.find(c => c.id === item.color) || COLORS[0]).hex;
+    if (renderers[item.id] && renderers[item.id].material) {
+      renderers[item.id].material.color.set(colorHex);
+    }
+    renderTicket();
+  } else if (t.dataset.qtyinput){
+    const item = items.find(i => i.id == t.dataset.qtyinput);
+    let v = parseInt(t.value,10); if (isNaN(v)||v<1) v=1;
+    item.qty = Math.min(999,v);
+    render();
+  }
+});
+
+itemsList.addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.infill){
+    const item = items.find(i => i.id == t.dataset.infill);
+    item.infill = parseInt(t.value,10);
+    render();
+  }
+});
+
+/* RUSH TOGGLE */
+document.getElementById('rushToggle').addEventListener('click', () => {
+  rush = !rush;
+  document.getElementById('rushSwitch').classList.toggle('on', rush);
+  renderTicket();
+});
+
+/* INITIALIZE METADATA */
+document.getElementById('ticketId').textContent = '3DF-' + Math.floor(Math.random()*89999 + 10000);
+document.getElementById('ticketDate').textContent = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'}).toUpperCase();
+
+/* PROFESSIONAL COLOR TICKET GENERATOR */
+function renderTicket(){
+  const ready = items.length > 0;
+  document.getElementById('ticketEmpty').style.display = ready ? 'none' : 'block';
+  document.getElementById('ticketBody').style.display = ready ? 'block' : 'none';
+  if (!ready) return;
+
+  const ticketItems = document.getElementById('ticketItems');
+  ticketItems.innerHTML = items.map((item, idx) => {
+    const mat = MATERIALS[item.material];
+    const colorObj = COLORS.find(c=>c.id===item.color);
+    return `
+      <div class="t-item">
+        <div class="t-item-header">
+          <span class="t-item-name">${String(idx+1).padStart(2,'0')}. ${escapeHtml(truncate(item.name, 22))}</span>
+          <span class="t-item-cost-val">${fmt(itemCost(item))}</span>
+        </div>
+        <div class="t-item-specs">
+          <span class="t-spec-tag">${mat.label}</span>
+          <span class="t-spec-tag">${colorObj.label}</span>
+          <span class="t-spec-tag">${item.infill}% Infill</span>
+          <span class="t-spec-tag">Qty: ${item.qty}</span>
+          <span class="t-spec-tag">${itemWeight(item).toFixed(1)}g</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const subtotal = items.reduce((sum, item) => sum + itemCost(item), 0);
+  const setup = SETUP_FEE;
+  const preRush = subtotal + setup;
+  const rushFee = rush ? preRush * (RUSH_MULTIPLIER-1) : 0;
+  const total = preRush + rushFee;
+
+  document.getElementById('cSubtotal').textContent = fmt(subtotal);
+  document.getElementById('cSetup').textContent = fmt(setup);
+  document.getElementById('cRushRow').style.display = rush ? 'table-row' : 'none';
+  document.getElementById('cRush').textContent = fmt(rushFee);
+  document.getElementById('cTotal').textContent = fmt(total);
+
+  const lines = items.map((item, idx) => {
+    const mat = MATERIALS[item.material];
+    const colorObj = COLORS.find(c=>c.id===item.color);
+    return `${idx+1}. ${item.name} — ${mat.label}, ${colorObj.label}, ${item.infill}% infill, Qty ${item.qty} (${itemWeight(item).toFixed(1)}g ea.) — ${fmt(itemCost(item))}`;
+  }).join('\n');
+
+  currentSummaryText = 
+`3DIFY.PRINTZ — Fabrication Quote Request
+Ref: ${document.getElementById('ticketId').textContent}
+Date: ${document.getElementById('ticketDate').textContent}
+
+Line Items (${items.length}):
+${lines}
+
+Subtotal: ${fmt(subtotal)}
+Setup & Handling: ${fmt(setup)}
+${rush ? 'Priority Rush (+25%): '+fmt(rushFee)+'\n' : ''}Estimated Total: ${fmt(total)}
+
+(Please attach STL files upon replying.)`;
+
+  document.getElementById('ctaEmail').href =
+    `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent('Quote Request ' + document.getElementById('ticketId').textContent)}&body=${encodeURIComponent(currentSummaryText)}`;
+  
+  const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(currentSummaryText)}`;
+  document.getElementById('ctaWhatsapp').href = waLink;
   document.querySelectorAll('.wa-btn').forEach(el => el.href = waLink);
+}
+
+function copyQuoteSummary() {
+  if (!currentSummaryText) return;
+  navigator.clipboard.writeText(currentSummaryText).then(() => {
+    alert("Quote specification summary copied to clipboard.");
+  });
+}
+
+function fmt(n){ return 'Rs. ' + Math.round(n).toLocaleString('en-LK'); }
+function truncate(s, n){ return s.length>n ? s.slice(0,n-1)+'…' : s; }
+function escapeHtml(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+render();
 </script>
 </body>
 </html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviews — 3dify.printz</title>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:wght@700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root { 
+    --bg: #F7F5F0; 
+    --surface: #FFFFFF; 
+    --line: #E1DDD5; 
+    --text: #121212; 
+    --muted: #4a4845; 
+    --star: #121212; 
+    --accent: #E0533C; 
+    --radius-pill: 100px;
+    --display: 'Italiana', serif; 
+    --body: 'Plus Jakarta Sans', sans-serif; 
+    --mono: 'Space Mono', monospace; 
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body); font-weight: 700; line-height: 1.6; }
+  a { color:inherit; text-decoration:none; }
+  .wrap { max-width:1240px; margin:0 auto; padding:0 36px; }
+  
+  header { position: sticky; top: 0; z-index: 50; background: rgba(247, 245, 240, 0.90); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 36px; max-width: 1240px; margin: 0 auto; gap: 16px; }
+  .logo { font-family: var(--display); font-weight: 700; font-size: 1.5rem; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 32px; font-size: 0.88rem; text-transform: uppercase; color: var(--muted); }
+  .nav-links a.active { color: var(--text); border-bottom: 2px solid var(--text); }
+  
+  .btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--body); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 12px 24px; border-radius: var(--radius-pill); border: 2px solid var(--text); cursor: pointer; transition: all .25s ease; white-space: nowrap; }
+  .btn-primary { background: var(--text); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-2px); }
+
+  .page-head { padding: 72px 0 48px; border-bottom: 1px solid var(--line); }
+  .page-head h1 { font-family: var(--display); font-size: clamp(2.5rem, 5vw, 4rem); text-transform: uppercase; }
+  
+  section.pad { padding: 72px 0 112px; }
+  .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .review { background: var(--surface); border: 1px solid var(--line); padding: 28px; display: flex; flex-direction: column; justify-content: space-between; }
+  .review-img { aspect-ratio: 4/3; width: 100%; object-fit: cover; border: 1px solid var(--line); margin-bottom: 20px; }
+  .review .stars { font-size: 0.82rem; margin-bottom: 12px; color: var(--star); }
+  .review p { font-size: 0.95rem; font-style: italic; line-height: 1.6; }
+  .review-foot { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .review-name { font-family: var(--display); font-size: 1.1rem; text-transform: uppercase; }
+  .review-job { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); text-transform: uppercase; margin-top: 2px; }
+
+  .cta-banner { margin-top: 72px; padding: 48px; background: var(--surface); border: 1px solid var(--line); text-align: center; }
+  .cta-banner h2 { font-family: var(--display); font-size: 2rem; text-transform: uppercase; margin-bottom: 12px; }
+  .cta-banner p { color: var(--muted); margin-bottom: 24px; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="index.html" class="logo">3dify.printz</a>
+    <div class="nav-links">
+      <a href="portfolio.html">Portfolio</a>
+      <a href="materials.html">Materials</a>
+      <a href="process.html">Process</a>
+      <a href="reviews.html" class="active">Reviews</a>
+    </div>
+    <a class="btn btn-primary wa-btn" href="#" target="_blank">Get Quote</a>
+  </nav>
+</header>
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <h1>Client Endorsements</h1>
+      <p>Verified reviews and custom prints delivered to engineers and creators.</p>
+    </div>
+  </div>
+  <section class="pad">
+    <div class="wrap">
+      <div class="review-grid" id="review-grid"></div>
+
+      <div class="cta-banner">
+        <h2>Join our satisfied client list</h2>
+        <p>Get high precision 3D printing with fast 24–48h turnaround.</p>
+        <a class="btn btn-primary wa-btn" href="#" target="_blank">Get Instant Quote</a>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  const WA_NUMBER = "94764892775"; 
+  const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hello! I saw your client reviews and would like to get a quote.")}`;
+  document.querySelectorAll('.wa-btn').forEach(el => el.href = waLink);
+
+  const reviews = [
+    { name:"Ishara W.", job:"Drone Parts", stars:5, img:"pic/1.png", text:"Impeccable structural rigidity and tolerances. Sent specifications on WhatsApp and received completed PETG components within 48 hours." },
+    { name:"Nadeesha P.", job:"Cosplay Prototype", stars:5, img:"pic/2.png", text:"The surface finish exceeds expectations for FDM printing. Their material advice saved weight while maintaining strength." },
+    { name:"Ruwan D.", job:"Custom Rig Bracket", stars:5, img:"pic/3.png", text:"Shared a rough pencil drawing; they translated it into CAD and delivered a rock-solid part. Flawless execution." },
+    { name:"Sanduni K.", job:"Jewelry Masters", stars:4, img:"pic/4.png", text:"Resin detailing was crisp down to the sub-millimeter level. Communication throughout production was super clear." },
+    { name:"Tharindu M.", job:"Sensor Enclosures", stars:5, img:"pic/5.png", text:"High quality housing for our microcontroller project. Fast turnaround and smooth surface finish." },
+  ];
+
+  document.getElementById('review-grid').innerHTML = reviews.map(r => `
+    <div class="review">
+      <div>
+        <img class="review-img" src="${r.img}" alt="Review print photo by ${r.name}" loading="lazy">
+        <div class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+        <p>“${r.text}”</p>
+      </div>
+      <div class="review-foot">
+        <div class="review-name">${r.name}</div>
+        <div class="review-job">${r.job}</div>
+      </div>
+    </div>
+  `).join('');
+</script>
+</body>
+</html>

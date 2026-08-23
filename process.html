@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process — 3dify.printz</title>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:wght@700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root { 
+    --bg: #F7F5F0; 
+    --surface: #FFFFFF; 
+    --line: #E1DDD5; 
+    --text: #121212; 
+    --muted: #4a4845; 
+    --accent: #E0533C; 
+    --radius-pill: 100px;
+    --display: 'Italiana', serif; 
+    --body: 'Plus Jakarta Sans', sans-serif; 
+    --mono: 'Space Mono', monospace; 
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body); font-weight: 700; line-height: 1.6; }
+  a { color:inherit; text-decoration:none; }
+  .wrap { max-width:1240px; margin:0 auto; padding:0 36px; }
+  
+  header { position: sticky; top: 0; z-index: 50; background: rgba(247, 245, 240, 0.90); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 36px; max-width: 1240px; margin: 0 auto; gap: 16px; }
+  .logo { font-family: var(--display); font-weight: 700; font-size: 1.5rem; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 32px; font-size: 0.88rem; text-transform: uppercase; color: var(--muted); }
+  .nav-links a.active { color: var(--text); border-bottom: 2px solid var(--text); }
+  
+  .btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--body); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 12px 24px; border-radius: var(--radius-pill); border: 2px solid var(--text); cursor: pointer; transition: all .25s ease; white-space: nowrap; }
+  .btn-primary { background: var(--text); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-2px); }
+
+  .page-head { padding: 72px 0 48px; border-bottom: 1px solid var(--line); }
+  .page-head h1 { font-family: var(--display); font-size: clamp(2.5rem, 5vw, 4rem); text-transform: uppercase; }
+  
+  section.pad { padding: 72px 0 112px; }
+  .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border: 1px solid var(--line); }
+  .process-step { padding: 40px 32px; border-right: 1px solid var(--line); background: var(--surface); }
+  .process-step:last-child { border-right: none; }
+  .process-step .pnum { font-family: var(--mono); color: var(--accent); font-size: 0.8rem; margin-bottom: 24px; }
+  .process-step h3 { font-family: var(--display); font-size: 1.35rem; margin-bottom: 12px; text-transform: uppercase; }
+
+  .cta-banner { margin-top: 72px; padding: 48px; background: var(--surface); border: 1px solid var(--line); text-align: center; }
+  .cta-banner h2 { font-family: var(--display); font-size: 2rem; text-transform: uppercase; margin-bottom: 12px; }
+  .cta-banner p { color: var(--muted); margin-bottom: 24px; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="index.html" class="logo">3dify.printz</a>
+    <div class="nav-links">
+      <a href="portfolio.html">Portfolio</a>
+      <a href="materials.html">Materials</a>
+      <a href="process.html" class="active">Process</a>
+      <a href="reviews.html">Reviews</a>
+    </div>
+    <a class="btn btn-primary wa-btn" href="#" target="_blank">Get Quote</a>
+  </nav>
+</header>
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <h1>The Creation Process</h1>
+      <p>From digital file submission to physical handoff in 4 simple steps.</p>
+    </div>
+  </div>
+  <section class="pad">
+    <div class="wrap">
+      <div class="process-grid">
+        <div class="process-step"><div class="pnum">01</div><h3>Submit File</h3><p>Share your STL, STEP file, or initial concept sketch directly with us on WhatsApp.</p></div>
+        <div class="process-step"><div class="pnum">02</div><h3>Instant Quote</h3><p>We review geometry, evaluate print time and material mass, and return a fixed price same-day.</p></div>
+        <div class="process-step"><div class="pnum">03</div><h3>Fabrication</h3><p>Your design enters production. Most custom jobs complete within a 24–48 hour window.</p></div>
+        <div class="process-step"><div class="pnum">04</div><h3>Dispatch</h3><p>Convenient self-collection or rapid islandwide delivery dispatched around Colombo.</p></div>
+      </div>
+
+      <div class="cta-banner">
+        <h2>Ready to start Step 1?</h2>
+        <p>Send your STL or 3D files to our team now for a quick review and price estimate.</p>
+        <a class="btn btn-primary wa-btn" href="#" target="_blank">Start Step 1: Submit File</a>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  const WA_NUMBER = "94764892775"; 
+  const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hello 3dify.printz! I would like to submit a file/concept for a quick quote.")}`;
+  document.querySelectorAll('.wa-btn').forEach(el => el.href = waLink);
+</script>
+</body>
+</html>
