@@ -1250,6 +1250,175 @@ footer {
   .ticket-wrap { position: relative; top: 0; }
 }
 
+@media (max-width: 768px) {
+  .wrap {
+    padding: 0 20px;
+  }
+
+  .nav-container {
+    padding: 14px 20px;
+  }
+
+  .brand-text {
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+  }
+
+  .studio-tag {
+    display: none;
+  }
+
+  .hero {
+    padding: 70px 0 60px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.4rem, 10vw, 3.2rem);
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    margin-bottom: 28px;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 40px;
+  }
+
+  .hero-cta-group .btn {
+    width: 100%;
+  }
+
+  .hero-stats {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-line);
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  .section-padding {
+    padding: 80px 0;
+  }
+
+  .section-header {
+    margin-bottom: 36px;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.9rem, 8vw, 2.5rem);
+  }
+
+  .about-card,
+  .service-card,
+  .material-card,
+  .process-step,
+  .review-card,
+  .portfolio-info,
+  .item-card,
+  .toggle-card,
+  .dropzone-card {
+    padding: 24px 20px;
+  }
+
+  .item-preview-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .add-more-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .mini-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mini-label {
+    width: auto;
+  }
+
+  .item-infill {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ticket-brand-header,
+  .ticket-meta-grid,
+  .ticket-inner {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .ticket-actions-row {
+    flex-direction: column;
+  }
+
+  .foot-wrap {
+    gap: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-actions {
+    display: none;
+  }
+
+  .status-badge {
+    font-size: 0.6rem;
+    padding: 6px 10px;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-sub {
+    font-size: 0.96rem;
+  }
+
+  .btn,
+  .btn-lg,
+  .btn-sm {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .dropzone {
+    padding: 32px 18px;
+  }
+
+  .dz-main {
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+  }
+
+  .dz-sub {
+    font-size: 0.72rem;
+  }
+
+  .total-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .total-box .amount {
+    font-size: 1.3rem;
+  }
+}
+
 @media print {
   body * { visibility: hidden; }
   .ticket-wrap, .ticket-wrap * { visibility: visible; }
